@@ -1,0 +1,16 @@
+/.gradle/
+**/.DS_Store
+**/build/
+**/classes/
+
+### IntelliJ IDEA ###
+.idea/
+**/*.iws
+**/*.iml
+**/*.ipr
+**/out/
+
+### Zipped archives ###
+**/*.tar
+**/*.jar
+
