@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+import static first.Command.*;
+import static first.Command.L;
 import static first.FirstDirection.EAST;
 import static first.FirstDirection.NORTH;
 import static first.FirstDirection.SOUTH;
@@ -13,14 +15,17 @@ import static first.FirstDirection.values;
 
 public class FirstMarsRover {
 
-  private int x;
-  private int y;
-  private FirstDirection direction;
+  private FirstRoverState state;
 
-  private final Function<FirstMarsRover, FirstMarsRover> SUB_Y_FUNCTION = marsRover -> {marsRover.y--; return marsRover;};
-  private final Function<FirstMarsRover, FirstMarsRover> SUB_X_FUNCTION = marsRover -> {marsRover.x--; return marsRover;};
-  private final Function<FirstMarsRover, FirstMarsRover> ADD_X_FUNCTION = marsRover -> {marsRover.x++; return marsRover;};
-  private final Function<FirstMarsRover, FirstMarsRover> ADD_Y_FUNCTION = marsRover -> {marsRover.y++; return marsRover;};
+  private final Function<FirstMarsRover, FirstMarsRover> SUB_Y_FUNCTION =
+      marsRover -> {marsRover.state = new FirstRoverState(marsRover.state.getX(), marsRover.state.getY() - 1, marsRover.state.getDirection());return marsRover;};
+  private final Function<FirstMarsRover, FirstMarsRover> SUB_X_FUNCTION =
+      marsRover -> {marsRover.state = new FirstRoverState(marsRover.state.getX() - 1, marsRover.state.getY(), marsRover.state.getDirection());return marsRover;};
+  private final Function<FirstMarsRover, FirstMarsRover> ADD_X_FUNCTION =
+      marsRover -> {marsRover.state = new FirstRoverState(marsRover.state.getX() + 1, marsRover.state.getY(), marsRover.state.getDirection());return marsRover;};
+  private final Function<FirstMarsRover, FirstMarsRover> ADD_Y_FUNCTION =
+      marsRover -> {marsRover.state = new FirstRoverState(marsRover.state.getX(), marsRover.state.getY() + 1, marsRover.state.getDirection());return marsRover;};
+
   private Map<FirstDirection, Function<FirstMarsRover, FirstMarsRover>> functionMap = new HashMap<FirstDirection, Function<FirstMarsRover, FirstMarsRover>>() {{
     put(NORTH, ADD_Y_FUNCTION);
     put(EAST, ADD_X_FUNCTION);
@@ -31,40 +36,30 @@ public class FirstMarsRover {
 
   public FirstMarsRover(int x, int y, FirstDirection direction) {
 
-    this.x = x;
-    this.y = y;
-    this.direction = direction;
+    this.state = new FirstRoverState(x, y, direction);
   }
 
-  public int getX() {
-    return x;
+  public FirstRoverState getState() {
+    return state;
   }
 
-  public int getY() {
-    return y;
-  }
-
-  public FirstDirection getDirection() {
-    return direction;
-  }
-
-  public FirstMarsRover turnLeft() {
-
-    int originalIndex = Arrays.asList(values()).indexOf(direction);
-    int indexOfLeft = originalIndex == 0 ? 3 : originalIndex - 1;
-    this.direction = values()[indexOfLeft];
+  public FirstMarsRover command(Command command) {
+    if (command == M) {
+      return functionMap.get(state.getDirection()).apply(this);
+    }
+    if (command == L) {
+      int originalIndex = Arrays.asList(values()).indexOf(this.state.getDirection());
+      int indexOfLeft = originalIndex == 0 ? 3 : originalIndex - 1;
+      this.state = new FirstRoverState(this.state.getX(), this.state.getY(), values()[indexOfLeft]);
+      return this;
+    }
+    if (command == R) {
+      int originalIndex = Arrays.asList(values()).indexOf(this.state.getDirection());
+      int indexOfRight = originalIndex == 3 ? 0 : originalIndex + 1;
+      this.state = new FirstRoverState(this.state.getX(), this.state.getY(), values()[indexOfRight]);
+      return this;
+    }
     return this;
-  }
-
-  public FirstMarsRover turnRight() {
-    int originalIndex = Arrays.asList(values()).indexOf(direction);
-    int indexOfRight = originalIndex == 3 ? 0 : originalIndex + 1;
-    this.direction = values()[indexOfRight];
-    return this;
-  }
-
-  public FirstMarsRover goForward() {
-    return functionMap.get(direction).apply(this);
   }
 
 }

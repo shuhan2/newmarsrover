@@ -1,5 +1,5 @@
 plugins {
-    id 'java'
+  id 'java'
 }
 
 group 'newmarsover'
@@ -8,14 +8,16 @@ version '1.0-SNAPSHOT'
 sourceCompatibility = 1.8
 
 repositories {
-    mavenCentral()
+  mavenCentral()
 }
 
 dependencies {
-    testCompile 'org.junit.jupiter:junit-jupiter-api:5.2.0'
-    testRuntime 'org.junit.jupiter:junit-jupiter-engine:5.2.0'
+  testCompile 'org.junit.jupiter:junit-jupiter-api:5.2.0'
+  testRuntime 'org.junit.jupiter:junit-jupiter-engine:5.2.0'
+  compileOnly 'org.projectlombok:lombok:1.18.0'
+  annotationProcessor 'org.projectlombok:lombok:1.18.10'
 }
 
 test {
-    useJUnitPlatform()
+  useJUnitPlatform()
 }
