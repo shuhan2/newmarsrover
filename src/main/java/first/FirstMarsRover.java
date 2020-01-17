@@ -64,9 +64,12 @@ public class FirstMarsRover {
     return state;
   }
 
-  public FirstMarsRover executeCommand(Command command) {
+  public void executeCommand(Command command) {
+    if (command == B) {
+      moveFunctionMap.put(NORTH, SUB_Y_FUNCTION);
+      commandFunctionMap.put(M, state -> moveFunctionMap.get(state.getDirection()).apply(state));
+    }
     this.state = commandFunctionMap.get(command).apply(this.state);
-    return this;
   }
 
 }
