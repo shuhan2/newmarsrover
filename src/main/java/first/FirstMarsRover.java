@@ -6,7 +6,6 @@ import java.util.Map;
 import java.util.function.Function;
 
 import static first.Command.*;
-import static first.Command.L;
 import static first.FirstDirection.EAST;
 import static first.FirstDirection.NORTH;
 import static first.FirstDirection.SOUTH;
@@ -26,11 +25,32 @@ public class FirstMarsRover {
   private final Function<FirstRoverState, FirstRoverState> ADD_Y_FUNCTION =
       state -> new FirstRoverState(state.getX(), state.getY() + 1, state.getDirection());
 
-  private Map<FirstDirection, Function<FirstRoverState, FirstRoverState>> functionMap = new HashMap<FirstDirection, Function<FirstRoverState, FirstRoverState>>() {{
+  private Map<FirstDirection, Function<FirstRoverState, FirstRoverState>> moveFunctionMap = new HashMap<FirstDirection, Function<FirstRoverState, FirstRoverState>>() {{
     put(NORTH, ADD_Y_FUNCTION);
     put(EAST, ADD_X_FUNCTION);
     put(SOUTH, SUB_Y_FUNCTION);
     put(WEST, SUB_X_FUNCTION);
+  }};
+
+  private final Function<FirstRoverState, FirstRoverState> MOVE_COMMAND =
+      state -> moveFunctionMap.get(state.getDirection()).apply(state);
+
+  private final Function<FirstRoverState, FirstRoverState> TURN_LEFT_COMMAND =
+      state -> {
+        int originalIndex = Arrays.asList(values()).indexOf(state.getDirection());
+        return new FirstRoverState(this.state.getX(), state.getY(), values()[(originalIndex + 3) % 4]);
+      };
+
+  private final Function<FirstRoverState, FirstRoverState> TURN_RIGHT_COMMAND =
+      state -> {
+        int originalIndex = Arrays.asList(values()).indexOf(state.getDirection());
+        return new FirstRoverState(state.getX(), state.getY(), values()[(originalIndex + 1) % 4]);
+      };
+
+  private Map<Command, Function<FirstRoverState, FirstRoverState>> commandFunctionMap = new HashMap<Command, Function<FirstRoverState, FirstRoverState>>() {{
+    put(M, MOVE_COMMAND);
+    put(L, TURN_LEFT_COMMAND);
+    put(R, TURN_RIGHT_COMMAND);
 
   }};
 
@@ -44,19 +64,7 @@ public class FirstMarsRover {
   }
 
   public FirstMarsRover executeCommand(Command command) {
-    if (command == M) {
-      this.state = functionMap.get(state.getDirection()).apply(this.state);
-    }
-    if (command == L) {
-      int originalIndex = Arrays.asList(values()).indexOf(this.state.getDirection());
-      int indexOfLeft = (originalIndex + 3) % 4;
-      this.state = new FirstRoverState(this.state.getX(), this.state.getY(), values()[indexOfLeft]);
-    }
-    if (command == R) {
-      int originalIndex = Arrays.asList(values()).indexOf(this.state.getDirection());
-      int indexOfRight = (originalIndex + 1) % 4;
-      this.state = new FirstRoverState(this.state.getX(), this.state.getY(), values()[indexOfRight]);
-    }
+    this.state = commandFunctionMap.get(command).apply(this.state);
     return this;
   }
 
