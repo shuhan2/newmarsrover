@@ -276,4 +276,16 @@ class FirstMarsRoverTest {
     assertEquals(1, marsRover.getState().getY());
     assertEquals(WEST, marsRover.getState().getDirection());
   }
+
+  @Test
+  void should_return_east_x_0_y_1_when_back_and_move_forward_given_east_x_1_y_1() {
+    FirstMarsRover marsRover = new FirstMarsRover(1, 1, EAST);
+
+    marsRover.executeCommand(B);
+    marsRover.executeCommand(M);
+
+    assertEquals(0, marsRover.getState().getX());
+    assertEquals(1, marsRover.getState().getY());
+    assertEquals(EAST, marsRover.getState().getDirection());
+  }
 }
