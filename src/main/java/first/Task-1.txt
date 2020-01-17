@@ -2,17 +2,17 @@ Task - 1
 requirement 1
 design: add command B, move_function change but left and right do not change
 1.
-given: command B and command R and direction north
+given: direction north, x, y
 when: executeCommand B and R
 then: direction east and same x, y
 
 2.
-given: command B and command R and direction south
+given: direction south, x, y
 when: executeCommand B and R
 then: direction west and same x, y
 
 3.
-given: command B and command R and direction west
+given: direction west, x, y
 when: executeCommand B and R
 then: direction north and same x, y
 
@@ -22,44 +22,65 @@ when: executeCommand B and R
 then: direction south and same x, y
 
 5.
-given: command B and command L and direction north
+given: direction north, x, y
 when: executeCommand B and L
 then: direction west and same x, y
 
 6.
-given: command B and command L and direction south
+given: and direction south, x, y
 when: executeCommand B and L
 then: direction east and same x, y
 
 7.
-given: command B and command L and direction west
+given: direction west, x, y
 when: executeCommand B and L
 then: direction south and same x, y
 
 8.
-given: command B and command L and direction east
+given: direction east, x, y
 when: executeCommand B and L
 then: direction north and same x, y
 
 9.
-given: command B and command M and direction north
+given: direction north, x, y
 when: executeCommand B and L
 then: y - 1 and same x, direction
 
 10.
-given: command B and command M and direction south
-when: executeCommand B and L
+given: direction south, x, y
+when: executeCommand B and M
 then: y + 1 and same x, direction
 
 11.
 given: command B and command M and direction west
-when: executeCommand B and L
+when: executeCommand B and M
 then: x + 1 and same y, direction
 
 12.
 given: command B and command M and direction east
-when: executeCommand B and L
+when: executeCommand B and M
 then: x - 1 and same y, direction
+
+add command H to revert B
+1.
+given: direction north
+when: executeCommand B, H and M
+then: y + 1 and same x, direction
+
+2.
+given: command B and command M and direction south
+when: executeCommand B, H and M
+then: y - 1 and same x, direction
+
+3.
+given: command B and command M and direction west
+when: executeCommand B, H and M
+then: x - 1 and same y, direction
+
+4.
+given: command B and command M and direction east
+when: executeCommand B, H and M
+then: x + 1 and same y, direction
 
 
 
