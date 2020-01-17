@@ -1,5 +1,5 @@
 package first;
 
 public enum Command {
-  M, L, R, B;
+  M, L, R, B, H
 }

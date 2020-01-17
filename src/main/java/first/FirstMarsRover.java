@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.function.Function;
 
 import static first.Command.B;
+import static first.Command.H;
 import static first.Command.L;
 import static first.Command.M;
 import static first.Command.R;
@@ -55,17 +56,20 @@ public class FirstMarsRover {
   public FirstMarsRover(int x, int y, FirstDirection direction) {
 
     this.state = new FirstRoverState(x, y, direction);
-    commandFunctionMap. put(M, MOVE_COMMAND);
+    commandFunctionMap.put(M, MOVE_COMMAND);
     commandFunctionMap.put(L, TURN_LEFT_COMMAND);
     commandFunctionMap.put(R, TURN_RIGHT_COMMAND);
-    commandFunctionMap.put(B, state -> state);
+
   }
 
   public void executeCommand(Command command) {
     if (command == B) {
       commandFunctionMap.put(M, state -> moveFunctionMap.get(FirstDirection.from((state.getDirection().getIndex() + 2) % 4)).apply(state));
+    } else if (command == H) {
+      commandFunctionMap.put(M, MOVE_COMMAND).apply(state);
+    } else {
+      this.state = commandFunctionMap.get(command).apply(this.state);
     }
-    this.state = commandFunctionMap.get(command).apply(this.state);
   }
 
 }
