@@ -68,6 +68,7 @@ public class FirstMarsRover {
     if (command == B) {
       moveFunctionMap.put(NORTH, SUB_Y_FUNCTION);
       moveFunctionMap.put(SOUTH, ADD_Y_FUNCTION);
+      moveFunctionMap.put(WEST, ADD_X_FUNCTION);
       commandFunctionMap.put(M, state -> moveFunctionMap.get(state.getDirection()).apply(state));
     }
     this.state = commandFunctionMap.get(command).apply(this.state);

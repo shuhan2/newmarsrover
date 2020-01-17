@@ -242,7 +242,7 @@ class FirstMarsRoverTest {
   }
 
   @Test
-  void should_return_north_x_1_y_0_when_back_and_move_forward_given_north_x_1_y_0() {
+  void should_return_north_x_1_y_0_when_back_and_move_forward_given_north_x_1_y_1() {
     FirstMarsRover marsRover = new FirstMarsRover(1, 1, NORTH);
 
     marsRover.executeCommand(B);
@@ -254,7 +254,7 @@ class FirstMarsRoverTest {
   }
 
   @Test
-  void should_return_south_x_1_y_2_when_back_and_move_forward_given_south_x_1_y_2() {
+  void should_return_south_x_1_y_2_when_back_and_move_forward_given_south_x_1_y_1() {
     FirstMarsRover marsRover = new FirstMarsRover(1, 1, SOUTH);
 
     marsRover.executeCommand(B);
@@ -263,5 +263,17 @@ class FirstMarsRoverTest {
     assertEquals(1, marsRover.getState().getX());
     assertEquals(2, marsRover.getState().getY());
     assertEquals(SOUTH, marsRover.getState().getDirection());
+  }
+
+  @Test
+  void should_return_south_x_2_y_1_when_back_and_move_forward_given_west_x_1_y_1() {
+    FirstMarsRover marsRover = new FirstMarsRover(1, 1, WEST);
+
+    marsRover.executeCommand(B);
+    marsRover.executeCommand(M);
+
+    assertEquals(2, marsRover.getState().getX());
+    assertEquals(1, marsRover.getState().getY());
+    assertEquals(WEST, marsRover.getState().getDirection());
   }
 }
