@@ -51,6 +51,7 @@ public class FirstMarsRover {
     put(M, MOVE_COMMAND);
     put(L, TURN_LEFT_COMMAND);
     put(R, TURN_RIGHT_COMMAND);
+    put(B, state -> state);
 
   }};
 
